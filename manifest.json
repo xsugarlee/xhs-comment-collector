@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "RED Collector",
+  "version": "3.0.0",
+  "description": "收藏小红书评论，支持分类、搜索、导出、置顶、批量管理，标签备注管理，图文解析，数据统计",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs",
+    "identity"
+  ],
+  "host_permissions": [
+    "https://www.xiaohongshu.com/*",
+    "https://YOUR_PROJECT_ID.supabase.co/*",
+    "https://api.bugpk.com/*"
+  ],
+  "action": {
+    "default_title": "RED Collector",
+    "default_popup": "",
+    "default_icon": {
+      "16": "src/assets/red.png",
+      "48": "src/assets/red.png",
+      "128": "src/assets/red.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.xiaohongshu.com/*"
+      ],
+      "css": [
+        "src/content/content.css"
+      ],
+      "js": [
+        "src/storage/storage.js",
+        "src/content/floatingMenu.js",
+        "src/content/collector.js",
+        "src/content/filter.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/dashboard/dashboard.html",
+        "src/video-player.html",
+        "src/assets/*",
+        "src/lib/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

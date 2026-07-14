@@ -1,0 +1,320 @@
+.xhs-collect-anchor {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* ── Collect overlay wrapper (overlaps three-dots area) ── */
+.xhs-collect-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 20;
+}
+
+.xhs-comment-host:hover .xhs-collect-wrapper,
+.xhs-comment-host.xhs-comment-hover .xhs-collect-wrapper,
+.comment-item:hover .xhs-collect-wrapper,
+[class*="commentItem"]:hover .xhs-collect-wrapper,
+div.comment:hover .xhs-collect-wrapper,
+.parent-comment:hover .xhs-collect-wrapper,
+section.comment:hover .xhs-collect-wrapper,
+.comment:hover .xhs-collect-wrapper {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.xhs-collect-btn {
+  position: relative;
+  z-index: 10;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid #e0e0e0;
+  background: rgba(255, 255, 255, 0.95);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+  color: #999;
+  padding: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.xhs-collect-btn::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff2e4d' d='M18 2H6c-1.1 0-2 .9-2 2v17c0 .36.19.69.5.87s.69.18 1 0l6.5-3.72l6.5 3.72c.15.09.32.13.5.13s.35-.04.5-.13c.31-.18.5-.51.5-.87V4c0-1.1-.9-2-2-2m0 8v9.28l-5.5-3.14a.98.98 0 0 0-.99 0l-5.5 3.14V4h12v6Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.xhs-collect-btn:hover {
+  background: #fff;
+  border-color: #ff2d55;
+  color: #ff2d55;
+}
+
+.xhs-collect-btn.collected {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #ff2e4d;
+}
+.xhs-collect-btn.collected::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff2e4d' d='M18 2H6c-1.1 0-2 .9-2 2v17c0 .36.19.69.5.87s.69.18 1 0l6.5-3.72l6.5 3.72c.15.09.33.13.5.13s.35-.04.5-.13c.31-.18.5-.51.5-.87V4c0-1.1-.9-2-2-2'/%3E%3C/svg%3E");
+}
+
+.xhs-collect-btn.collected:hover {
+  background: #fff1f2;
+  border-color: #ff2e4d;
+}
+
+.xhs-reply-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 6px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+  font-size: 11px;
+  color: #999;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.xhs-cat-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  height: 20px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #fff;
+  font-weight: 500;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+#xhs-collector-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2147483646;
+  background: transparent;
+}
+
+#xhs-collector-overlay.active {
+  display: block;
+}
+
+#xhs-collector-menu {
+  display: none;
+  position: fixed;
+  z-index: 2147483647;
+  min-width: 220px;
+  max-width: 300px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+#xhs-collector-menu.active {
+  display: block;
+  animation: xhsMenuFadeIn 0.15s ease-out;
+}
+
+@keyframes xhsMenuFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.xhs-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.xhs-menu-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.xhs-menu-close {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.xhs-menu-close:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.xhs-menu-body {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 6px 0;
+}
+
+.xhs-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #444;
+  transition: background 0.15s;
+}
+
+.xhs-menu-item:hover {
+  background: #f5f5f5;
+}
+
+.xhs-menu-item.active {
+  background: #fff0f3;
+  color: #ff2d55;
+  font-weight: 500;
+}
+
+.xhs-menu-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.xhs-menu-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.xhs-menu-footer {
+  padding: 10px 16px 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.xhs-menu-new-cat {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.xhs-menu-input {
+  flex: 1;
+  height: 30px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0 10px;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.xhs-menu-input:focus {
+  border-color: #ff2d55;
+}
+
+.xhs-menu-add-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: #ff2d55;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.xhs-menu-add-btn:hover {
+  background: #e6264a;
+}
+
+.xhs-menu-remove-btn {
+  width: 100%;
+  margin-top: 8px;
+  height: 30px;
+  border: 1px solid #ff4d4f;
+  background: #fff;
+  color: #ff4d4f;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.xhs-menu-remove-btn:hover {
+  background: #ff4d4f;
+  color: #fff;
+}
+
+#xhs-collector-toast {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2147483647;
+  background: rgba(0, 0, 0, 0.78);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: xhsToastIn 0.25s ease-out;
+}
+
+#xhs-collector-toast.active {
+  display: block;
+}
+
+@keyframes xhsToastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

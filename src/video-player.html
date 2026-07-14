@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视频播放</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #fff;
+    }
+    .player-container {
+      width: 100%;
+      max-width: 900px;
+      padding: 20px;
+    }
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .info {
+      padding: 20px 0;
+      text-align: center;
+    }
+    .title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #ff2442;
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #e61e3a;
+    }
+    .btn-secondary {
+      background: #374151;
+      color: #fff;
+    }
+    .btn-secondary:hover {
+      background: #4b5563;
+    }
+    .back-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      color: #9ca3af;
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .back-link:hover {
+      color: #fff;
+    }
+    .no-video {
+      text-align: center;
+      padding: 60px 20px;
+      color: #9ca3af;
+    }
+    .no-video h2 {
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <a href="#" onclick="history.back();return false;" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    返回
+  </a>
+
+  <div class="player-container">
+    <div class="video-wrapper">
+      <video id="videoPlayer" controls autoplay playsinline>
+        <source id="videoSource" src="" type="video/mp4">
+      </video>
+    </div>
+    <div class="info">
+      <h1 class="title" id="videoTitle">加载中...</h1>
+      <div class="actions" id="actions"></div>
+    </div>
+  </div>
+
+  <div class="no-video" id="noVideo" style="display:none">
+    <h2>无法加载视频</h2>
+    <p>视频链接无效或已过期</p>
+    <div class="actions" style="margin-top:20px">
+      <a id="backToXhs" href="#" target="_blank" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        前往小红书查看
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoUrl = urlParams.get('url');
+    const title = urlParams.get('title');
+    const sourceUrl = urlParams.get('source');
+
+    const videoPlayer = document.getElementById('videoPlayer');
+    const videoSource = document.getElementById('videoSource');
+    const videoTitle = document.getElementById('videoTitle');
+    const actions = document.getElementById('actions');
+    const noVideo = document.getElementById('noVideo');
+    const backToXhs = document.getElementById('backToXhs');
+
+    if (videoUrl) {
+      videoSource.src = decodeURIComponent(videoUrl);
+      videoPlayer.load();
+      
+      if (title) {
+        document.title = decodeURIComponent(title) + ' - 视频播放';
+        videoTitle.textContent = decodeURIComponent(title);
+      }
+
+      const downloadBtn = document.createElement('a');
+      downloadBtn.href = decodeURIComponent(videoUrl);
+      downloadBtn.download = '';
+      downloadBtn.className = 'btn btn-secondary';
+      downloadBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        下载视频
+      `;
+      actions.appendChild(downloadBtn);
+
+      if (sourceUrl) {
+        const viewBtn = document.createElement('a');
+        viewBtn.href = decodeURIComponent(sourceUrl);
+        viewBtn.target = '_blank';
+        viewBtn.className = 'btn btn-primary';
+        viewBtn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          查看原笔记
+        `;
+        actions.appendChild(viewBtn);
+      }
+
+      videoPlayer.addEventListener('error', () => {
+        videoPlayer.style.display = 'none';
+        noVideo.style.display = 'block';
+        if (sourceUrl) {
+          backToXhs.href = decodeURIComponent(sourceUrl);
+        }
+      });
+    } else {
+      videoPlayer.style.display = 'none';
+      noVideo.style.display = 'block';
+      if (sourceUrl) {
+        backToXhs.href = decodeURIComponent(sourceUrl);
+      }
+    }
+  </script>
+</body>
+</html>
