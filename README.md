@@ -22,5 +22,5 @@ This app allows you to collect Xiaohongshu comments, supporting categorization, 
 </p>
 
 ## License
-[GPL v3](https://github.com/xsugarlee/xhs-comment-collector/blob/main/LICENSE) License © [xsugarlee](https://github.com/xsugarlee)
+[License](https://github.com/xsugarlee/xhs-comment-collector/blob/main/LICENSE) © [xsugarlee](https://github.com/xsugarlee)
 
